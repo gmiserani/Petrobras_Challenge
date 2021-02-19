@@ -169,18 +169,18 @@
       </include>
 
     <!-- THE EQUIPMENT D MODEL -->
-      <include>
-        <uri>model://equipmentD</uri>
+    <!--  <include>
+        <uri>model://equipmentD</uri>-->
           <!-- Pose ( x y z r p y ) -->
-        <pose frame=''>5.0 2.08 1.67 0 -0 0</pose>
-      </include>
+       <!-- <pose frame=''>5.0 2.08 1.67 0 -0 0</pose>
+      </include>-->
 
     <!-- THE EQUIPMENT E MODEL -->
-      <include>
-        <uri>model://equipmentE</uri>
+     <!-- <include>
+        <uri>model://equipmentE</uri>-->
           <!-- Pose ( x y z r p y ) -->
-        <pose frame=''>8 8 1.17 0 -0 0</pose>
-      </include>
+        <!--<pose frame=''>8 8 1.17 0 -0 0</pose>
+      </include>-->
     
     <!-- THE VOID (for spawning objects out of camera view) {-->
     <model name='the_void'>
