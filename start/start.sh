@@ -20,7 +20,7 @@ PROJECT_NAME=fase1_sprogram
 MAIN_DIR=~/"bag_files"
 
 # following commands will be executed first, in each window
-pre_input="export UAV_NAME=uav1; export UAV_TYPE=f450; export WORLD_FILE=./world.yaml; export PX4_SIM_SPEED_FACTOR=1.0"
+pre_input="export UAV_NAME=uav1; export UAV_TYPE=f450; export WORLD_FILE=./world.yaml; export PX4_SIM_SPEED_FACTOR=1.0; export RUN_TYPE=simulation; export ODOMETRY_TYPE=hector"
 
 # define commands
 # 'name' 'command'
@@ -28,15 +28,19 @@ pre_input="export UAV_NAME=uav1; export UAV_TYPE=f450; export WORLD_FILE=./world
 input=(
   'Roscore' "roscore
 "
+  'Hector' "waitForSimulation; roslaunch mrs_uav_general hector_slam.launch
+"
   'Gazebo' "waitForRos; roslaunch petrobras_challenge simulation_arena.launch gui:=true
 "
-  'Spawn' "waitForSimulation; spawn_uav 1 --file uav1_pos.yaml --f450 --run --delete --enable-rangefinder --enable-rangefinder-up --enable-rplidar --enable-ground-truth --enable-bluefox-camera --enable-realsense-front
+  'PrepSpawn' "waitForSimulation; roslaunch mrs_simulation mrs_drone_spawner.launch
+"
+  'Spawn' "waitForSimulation; while [[ true ]]; do echo \"waiting for mrs_drone_spawner\"; if rosnode list | grep -q \"mrs_drone_spawner\"; then rosservice call /mrs_drone_spawner/spawn \"1 --f450 --enable-rangefinder --enable-rangefinder-up --enable-rplidar --enable-ground-truth --enable-bluefox-camera --enable-realsense-front --pos 8.1 2.0 1.0 3.14\"; break; fi; done; exit 0 
 "
   'Control' "waitForOdometry; roslaunch mrs_uav_general core.launch config_uav_manager:=./custom_configs/uav_manager.yaml
 "
   'AutomaticStart' "waitForSimulation; roslaunch mrs_uav_general automatic_start.launch
 "
-  "PrepareUAV" "waitForControl; rosservice call /$UAV_NAME/mavros/cmd/arming 1; rosservice call /$UAV_NAME/mavros/set_mode 0 offboard; rosservice call /uav1/control_manager/use_safety_area \"data: false\"; rosservice call /uav1/control_manager/set_min_height \"value: 0.0\"
+   "PrepareUAV" "waitForControl; rosservice call /uav1/control_manager/use_safety_area \"data: false\"; rosservice call /$UAV_NAME/mavros/cmd/arming 1; rosservice call /$UAV_NAME/mavros/set_mode 0 offboard; rosservice call /uav1/control_manager/set_min_height \"value: 0.0\"
 "
   'Camera_follow' "waitForOdometry; gz camera -c gzclient_camera -f $UAV_NAME"
   'gazebo_camera_follow' "waitForOdometry; gz camera -c gzclient_camera -f $UAV_NAME; history -s gz camera -c gzclient_camera -f $UAV_NAME"
