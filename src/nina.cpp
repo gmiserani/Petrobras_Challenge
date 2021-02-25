@@ -16,41 +16,6 @@
 
 string base = "";
 
-void jobrabedex(){
-
-  Controle *ctrl1 = new Controle();
-
-  if(base == "A") {
-
-	  ctrl1->mudarPosicao(3.2, 0.0, 2.4);
-    ctrl1->mudarPosicao(3.2, 0.0, 1.0);
-
-	  d_client.call(detach_srv);
-
-  } else if(base == "B") {
-  
-    ctrl1->mudarPosicao(4.0, -2.0, 2.0);
-  	ctrl1->mudarPosicao(4.0, -2.0, 0.5);
-
-    d_client.call(detach_srv);
-
-    ctrl1->mudarPosicao(4.0, -2.0, 2.0);
-    
-  } else {
-
-    ctrl1->mudarPosicao(5.0, -1.0, 2.0);
-    ctrl1->mudarPosicao(5.0, -1.0, 0.5);
-
-    d_client.call(detach_srv);
-
-    ctrl1->mudarPosicao(5.0, -1.0, 2.0);
-    
-  }
-
-  delete ctrl1;
-
-}
-
 void callback(const sensor_msgs::ImageConstPtr& msg){
 
   QR *qr = new QR();

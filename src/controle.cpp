@@ -77,3 +77,36 @@ class Controle{
 		}
 			
 	}
+
+	void Controle::jobrabedex(){
+
+		Controle *ctrl1 = new Controle();
+
+		if(base == "A") {
+
+			ctrl->mudarPosicao(3.2, 0.0, 2.4);
+			ctrl->mudarPosicao(3.2, 0.0, 1.0);
+
+			d_client.call(detach_srv);
+
+		} else if(base == "B") {
+		
+			ctrl->mudarPosicao(4.0, -2.0, 2.0);
+			ctrl->mudarPosicao(4.0, -2.0, 0.5);
+
+			d_client.call(detach_srv);
+
+			ctrl->mudarPosicao(4.0, -2.0, 2.0);
+			
+		} else {
+
+			ctrl->mudarPosicao(5.0, -1.0, 2.0);
+			ctrl->mudarPosicao(5.0, -1.0, 0.5);
+
+			d_client.call(detach_srv);
+
+			ctrl->mudarPosicao(5.0, -1.0, 2.0);
+			
+		}
+
+	}
