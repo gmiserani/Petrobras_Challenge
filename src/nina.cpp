@@ -1,4 +1,7 @@
 #include <iostream>
+#include <sstream>
+#include <string.h>
+
 #include <ros/ros.h>
 #include <ros/time.h>
 #include <ros/duration.h>
@@ -7,18 +10,21 @@
 #include <gazebo_ros_link_attacher/Attach.h>
 #include "gazebo_ros_link_attacher/AttachRequest.h"
 #include "gazebo_ros_link_attacher/AttachResponse.h"
+
 #include "controle.cpp"
 #include "qrcode.cpp"
-#include <sstream>
-#include <string.h>
 
 string base = "";
 
-void callback(const sensor_msgs::ImageConstPtr& msg) {
+void callback(const sensor_msgs::ImageConstPtr& msg){
+
   QR *qr = new QR();
+
   Mat im = qr->imageCb(msg);
   base = qr->decode(im);
+
   delete qr;
+
 }
 
 int main(int argc, char **argv) {
@@ -147,6 +153,8 @@ int main(int argc, char **argv) {
   }
 
   ctrl->mudarPosicao(0.0, 0.0, 2.0);
+
+  ctrl->Landing();
 
 	return 0;
 }

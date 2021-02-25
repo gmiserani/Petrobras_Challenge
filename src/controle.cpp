@@ -4,46 +4,76 @@
 #include <mrs_msgs/PositionCommand.h>
 #include <std_msgs/String.h>
 
-class Controle {
+class Controle{
 
-public:
+	public:
 
-	Controle();
+		Controle();
 
-	~Controle();
+		~Controle();
 
-	void mudarPosicao(double x, double y, double z);
+		void mudarPosicao(double x, double y, double z);
+
 };
 
-	Controle::Controle() {
-		ROS_INFO("objeto criado");	
-	}
+	Controle::Controle(){ ROS_INFO("objeto criado"); }
 
-	Controle::~Controle() {
-		ROS_INFO("objeto destruido");
-	}
+	Controle::~Controle(){ ROS_INFO("objeto destruido"); }
 
-	void Controle::mudarPosicao(double x, double y, double z) {
+	void Controle::mudarPosicao(double x, double y, double z){
 
 		ros::NodeHandle n;
 		ros::Publisher pub = n.advertise<mrs_msgs::ReferenceStamped>("/uav1/control_manager/reference", 1000);
 
 		mrs_msgs::ReferenceStamped pos;
+
 		pos.reference.position.x = x;
 		pos.reference.position.y = y;
 		pos.reference.position.z = z;
 
 		ros::Rate loop_rate(5);
+
 		int count = 0;
 
-		while(ros::ok()) {
+		while(ros::ok()){
 	
 			pub.publish(pos);
     
 			ros::spinOnce();
 			loop_rate.sleep();
-    			count++;
 
-    			if(count == 60) {
+    		++count;
 
-    				break; }}}
+    		if(count == 60) break; 
+		}
+			
+	}
+
+	void Controle::Landing(){
+
+		ros::NodeHandle n;
+		ros::Publisher pub = n.advertise<mrs_msgs::ReferenceStamped>("/uav1/control_manager/reference", 1000);
+
+		mrs_msgs::ReferenceStamped pos;
+
+		double z == 0.5
+		
+		pos.reference.position.z = z;
+
+		ros::Rate loop_rate(5);
+
+		int count = 0;
+
+		while(ros::ok()){
+	
+			pub.publish(pos);
+    
+			ros::spinOnce();
+			loop_rate.sleep();
+
+    		++count;
+
+    		if(count == 60) break; 
+		}
+			
+	}
