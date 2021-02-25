@@ -20,7 +20,7 @@ public:
   void mudarPosicao(double x, double y, double z);
   void attach(string model2, string link2);
   void detach(string base, string model2, string link2);
-  void pousar();
+  void Landing(double z);
 
 };
 
