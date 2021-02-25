@@ -77,32 +77,3 @@ int main(int argc, char **argv) {
   return 0;
 
 }
-
-	  d_client.call(detach_srv);
-
-  } else if(base == "B") {
-  
-    ctrl->mudarPosicao(4.0, -2.0, 2.0);
-  	ctrl->mudarPosicao(4.0, -2.0, 0.5);
-
-    d_client.call(detach_srv);
-
-    ctrl->mudarPosicao(4.0, -2.0, 2.0);
-    
-  } else {
-
-    ctrl->mudarPosicao(5.0, -1.0, 2.0);
-    ctrl->mudarPosicao(5.0, -1.0, 0.5);
-
-    d_client.call(detach_srv);
-
-    ctrl->mudarPosicao(5.0, -1.0, 2.0);
-    
-  }
-
-  ctrl->mudarPosicao(0.0, 0.0, 2.0);
-
-  ctrl->Landing();
-
-	return 0;
-}
