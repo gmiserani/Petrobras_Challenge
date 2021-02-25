@@ -23,6 +23,8 @@ void callback(const sensor_msgs::ImageConstPtr& msg) {
 
 int main(int argc, char **argv) {
 
+  ROS_INFO("Iniciando a Missão");
+
   ros::init(argc, argv, "Nina");
 
   ros::NodeHandle n;
@@ -73,6 +75,8 @@ int main(int argc, char **argv) {
   // retorna para a base inicial e pousa
 
   ctrl->mudarPosicao(0.0, 0.0, 2.0);
+
+  ctrl->Landing(0.5);
 
   return 0;
 

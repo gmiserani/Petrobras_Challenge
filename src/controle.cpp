@@ -24,13 +24,9 @@ public:
 
 };
 
-Controle::Controle() {
-  ROS_INFO("objeto criado");	
-}
+Controle::Controle() {}
 
-Controle::~Controle() {
-  ROS_INFO("objeto destruido");
-}
+Controle::~Controle(){}
 
 void Controle::mudarPosicao(double x, double y, double z) {
 
@@ -53,9 +49,7 @@ void Controle::mudarPosicao(double x, double y, double z) {
     loop_rate.sleep();
     count++;
 
-    if(count == 70) {
-
-      break; }}}
+    if(count == 70) break; }}
 
 void Controle::attach(string model2, string link2) {
 
@@ -70,6 +64,8 @@ void Controle::attach(string model2, string link2) {
 
   attach_srv.request.model_name_2 = model2;
   attach_srv.request.link_name_2 = link2;
+
+  ROS_INFO("Pegando a Caixa");
 
   a_client.call(attach_srv);
 
@@ -93,12 +89,18 @@ void Controle::detach(string base, string model2, string link2) {
 
     mudarPosicao(3.2, 0.0, 2.4);
     mudarPosicao(3.2, 0.0, 1.0);
+
+	ROS_INFO("Soltando a Caixa");
+
     d_client.call(detach_srv);
 
   } else if(base == "B") {
   
     mudarPosicao(4.0, -2.0, 2.0);
     mudarPosicao(4.0, -2.0, 0.5);
+
+	ROS_INFO("Soltando a Caixa");
+
     d_client.call(detach_srv);
     mudarPosicao(4.0, -2.0, 2.0);
 
@@ -106,7 +108,34 @@ void Controle::detach(string base, string model2, string link2) {
 
     mudarPosicao(5.0, -1.0, 2.0);
     mudarPosicao(5.0, -1.0, 0.5);
+
+	ROS_INFO("Soltando a Caixa");
+
     d_client.call(detach_srv);
     mudarPosicao(5.0, -1.0, 2.0);
   }
 }
+
+void Controle::Landing(double z){
+
+  ros::NodeHandle n;
+  ros::Publisher pub = n.advertise<mrs_msgs::ReferenceStamped>("/uav1/control_manager/reference", 1000);
+
+  mrs_msgs::ReferenceStamped pos;
+
+  pos.reference.position.z = z;
+
+  ros::Rate loop_rate(5);
+
+  int count = 0;
+
+  while(ros::ok()) {
+	
+    pub.publish(pos);
+    
+    ros::spinOnce();
+    loop_rate.sleep();
+
+    ++count;
+
+    if(count == 70) break; }}
