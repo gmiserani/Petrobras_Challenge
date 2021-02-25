@@ -14,16 +14,20 @@ using namespace std;
 
 string base = "";
 
-void callback(const sensor_msgs::ImageConstPtr& msg) {
+void callback(const sensor_msgs::ImageConstPtr& msg){
+
   QR *qr = new QR();
+
   Mat im = qr->imageCb(msg);
   base = qr->decode(im);
+
   delete qr;
+
 }
 
 int main(int argc, char **argv) {
 
-  ROS_INFO("Iniciando a Missão");
+  ROS_INFO("Iniciando a Missao.");
 
   ros::init(argc, argv, "Nina");
 
@@ -76,7 +80,11 @@ int main(int argc, char **argv) {
 
   ctrl->mudarPosicao(0.0, 0.0, 2.0);
 
-  ctrl->Landing(0.5);
+  ROS_INFO("Pousando...");
+
+  ctrl->Landing(0.0);
+
+  ROS_INFO("Fim da Missao.");
 
   return 0;
 
