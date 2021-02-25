@@ -1,112 +1,112 @@
 #include <iostream>
+#include <sstream>
 #include <ros/ros.h>
 #include <mrs_msgs/ReferenceStamped.h>
 #include <mrs_msgs/PositionCommand.h>
 #include <std_msgs/String.h>
+#include <gazebo_ros_link_attacher/Attach.h>
+#include "gazebo_ros_link_attacher/AttachRequest.h"
+#include "gazebo_ros_link_attacher/AttachResponse.h"
+using namespace std;
 
-class Controle{
+class Controle {
 
-	public:
+public:
 
-		Controle();
+  Controle();
 
-		~Controle();
+  ~Controle();
 
-		void mudarPosicao(double x, double y, double z);
+  void mudarPosicao(double x, double y, double z);
+  void attach(string model2, string link2);
+  void detach(string base, string model2, string link2);
+  void pousar();
 
 };
 
-	Controle::Controle(){ ROS_INFO("objeto criado"); }
+Controle::Controle() {
+  ROS_INFO("objeto criado");	
+}
 
-	Controle::~Controle(){ ROS_INFO("objeto destruido"); }
+Controle::~Controle() {
+  ROS_INFO("objeto destruido");
+}
 
-	void Controle::mudarPosicao(double x, double y, double z){
+void Controle::mudarPosicao(double x, double y, double z) {
 
-		ros::NodeHandle n;
-		ros::Publisher pub = n.advertise<mrs_msgs::ReferenceStamped>("/uav1/control_manager/reference", 1000);
+  ros::NodeHandle n;
+  ros::Publisher pub = n.advertise<mrs_msgs::ReferenceStamped>("/uav1/control_manager/reference", 1000);
 
-		mrs_msgs::ReferenceStamped pos;
+  mrs_msgs::ReferenceStamped pos;
+  pos.reference.position.x = x;
+  pos.reference.position.y = y;
+  pos.reference.position.z = z;
 
-		pos.reference.position.x = x;
-		pos.reference.position.y = y;
-		pos.reference.position.z = z;
+  ros::Rate loop_rate(5);
+  int count = 0;
 
-		ros::Rate loop_rate(5);
-
-		int count = 0;
-
-		while(ros::ok()){
+  while(ros::ok()) {
 	
-			pub.publish(pos);
+    pub.publish(pos);
     
-			ros::spinOnce();
-			loop_rate.sleep();
+    ros::spinOnce();
+    loop_rate.sleep();
+    count++;
 
-    		++count;
+    if(count == 70) {
 
-    		if(count == 60) break; 
-		}
-			
-	}
+      break; }}}
 
-	void Controle::Landing(){
+void Controle::attach(string model2, string link2) {
 
-		ros::NodeHandle n;
-		ros::Publisher pub = n.advertise<mrs_msgs::ReferenceStamped>("/uav1/control_manager/reference", 1000);
+  ros::NodeHandle n;
 
-		mrs_msgs::ReferenceStamped pos;
+  ros::ServiceClient a_client = n.serviceClient<gazebo_ros_link_attacher::Attach>("link_attacher_node/attach");
 
-		double z == 0.5
-		
-		pos.reference.position.z = z;
+  gazebo_ros_link_attacher::Attach attach_srv;
 
-		ros::Rate loop_rate(5);
+  attach_srv.request.model_name_1 = "uav1";
+  attach_srv.request.link_name_1 = "base_link";
 
-		int count = 0;
+  attach_srv.request.model_name_2 = model2;
+  attach_srv.request.link_name_2 = link2;
 
-		while(ros::ok()){
-	
-			pub.publish(pos);
-    
-			ros::spinOnce();
-			loop_rate.sleep();
+  a_client.call(attach_srv);
 
-    		++count;
+}
 
-    		if(count == 60) break; 
-		}
-			
-	}
+void Controle::detach(string base, string model2, string link2) {
 
-	void Controle::jobrabedex(){
+  ros::NodeHandle n;
 
-		Controle *ctrl1 = new Controle();
+  ros::ServiceClient d_client = n.serviceClient<gazebo_ros_link_attacher::Attach>("link_attacher_node/detach");
 
-		if(base == "A") {
+  gazebo_ros_link_attacher::Attach detach_srv;
 
-			ctrl->mudarPosicao(3.2, 0.0, 2.4);
-			ctrl->mudarPosicao(3.2, 0.0, 1.0);
+  detach_srv.request.model_name_1 = "uav1";
+  detach_srv.request.link_name_1 = "base_link";
 
-			d_client.call(detach_srv);
+  detach_srv.request.model_name_2 = model2;
+  detach_srv.request.link_name_2 = link2;
 
-		} else if(base == "B") {
-		
-			ctrl->mudarPosicao(4.0, -2.0, 2.0);
-			ctrl->mudarPosicao(4.0, -2.0, 0.5);
+  if(base == "A") {
 
-			d_client.call(detach_srv);
+    mudarPosicao(3.2, 0.0, 2.4);
+    mudarPosicao(3.2, 0.0, 1.0);
+    d_client.call(detach_srv);
 
-			ctrl->mudarPosicao(4.0, -2.0, 2.0);
-			
-		} else {
+  } else if(base == "B") {
+  
+    mudarPosicao(4.0, -2.0, 2.0);
+    mudarPosicao(4.0, -2.0, 0.5);
+    d_client.call(detach_srv);
+    mudarPosicao(4.0, -2.0, 2.0);
 
-			ctrl->mudarPosicao(5.0, -1.0, 2.0);
-			ctrl->mudarPosicao(5.0, -1.0, 0.5);
+  } else {
 
-			d_client.call(detach_srv);
-
-			ctrl->mudarPosicao(5.0, -1.0, 2.0);
-			
-		}
-
-	}
+    mudarPosicao(5.0, -1.0, 2.0);
+    mudarPosicao(5.0, -1.0, 0.5);
+    d_client.call(detach_srv);
+    mudarPosicao(5.0, -1.0, 2.0);
+  }
+}
