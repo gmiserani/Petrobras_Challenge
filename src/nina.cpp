@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
 
   ctrl->mudarPosicao(0.0, 0.0, 2.0);
 
-  ROS_INFO("Pousando...");
+  ROS_INFO("Pousando... TESTE");
 
   ctrl->Landing();
 
