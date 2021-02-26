@@ -24,7 +24,7 @@ public:
 
 };
 
-Controle::Controle() {}
+Controle::Controle(){}
 
 Controle::~Controle(){}
 
@@ -52,7 +52,7 @@ void Controle::mudarPosicao(double x, double y, double z){
 
     ++count;
 
-    if(count == 70) break; }}
+    if(count == 50) break; }}
 
 void Controle::attach(string model2, string link2) {
 
@@ -90,7 +90,7 @@ void Controle::detach(string base, string model2, string link2) {
 
   ROS_INFO("Lendo o QRCode...");
 
-  if(base == "A") {
+  if(base == "A"){
 
     mudarPosicao(3.2, 0.0, 2.4);
     mudarPosicao(3.2, 0.0, 1.0);
@@ -99,7 +99,7 @@ void Controle::detach(string base, string model2, string link2) {
 
     d_client.call(detach_srv);
 
-  } else if(base == "B") {
+  } else if(base == "B"){
   
     mudarPosicao(4.0, -2.0, 2.0);
     mudarPosicao(4.0, -2.0, 0.5);
@@ -107,6 +107,7 @@ void Controle::detach(string base, string model2, string link2) {
 	ROS_INFO("Soltando a Caixa B.");
 
     d_client.call(detach_srv);
+	
     mudarPosicao(4.0, -2.0, 2.0);
 
   } else {
@@ -117,8 +118,11 @@ void Controle::detach(string base, string model2, string link2) {
 	ROS_INFO("Soltando a Caixa C.");
 
     d_client.call(detach_srv);
+
     mudarPosicao(5.0, -1.0, 2.0);
+
   }
+
 }
 
 void Controle::Landing(double z){
@@ -143,4 +147,4 @@ void Controle::Landing(double z){
 
     ++count;
 
-    if(count == 70) break; }}
+    if(count == 50) break; }}
