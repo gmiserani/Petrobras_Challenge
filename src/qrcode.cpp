@@ -28,7 +28,7 @@ public:
 	~QR(){};
 	
 	Mat imageCb(const sensor_msgs::ImageConstPtr& msg);
-	
+
 	string decode(Mat &im);
 
 };
@@ -69,7 +69,7 @@ string QR::decode(Mat &im){
       y[i] = symbol->get_location_y(i);
 
     }
- 
+
   }
 
   // desenha a bounding box no qr code com dois pontos opostos

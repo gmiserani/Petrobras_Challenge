@@ -107,7 +107,7 @@ void Controle::detach(string base, string model2, string link2) {
 	ROS_INFO("Soltando a Caixa B.");
 
     d_client.call(detach_srv);
-	
+
     mudarPosicao(4.0, -2.0, 2.0);
 
   } else {
@@ -132,7 +132,7 @@ void Controle::Landing(double z){
 
   mrs_msgs::ReferenceStamped pos;
 
-  pos.reference.position.z = z;
+  pos.reference.position.z = 0.0;
 
   ros::Rate loop_rate(5);
 

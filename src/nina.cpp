@@ -82,7 +82,7 @@ int main(int argc, char **argv) {
 
   ROS_INFO("Pousando...");
 
-  ctrl->Landing(0.0);
+  ctrl->Landing();
 
   ROS_INFO("Fim da Missao.");
 
